@@ -12,6 +12,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  /* transform: rotate(90deg) scale(0.9); */
 }
 
 .unselectable {
@@ -30,6 +31,7 @@
 
 @media print {
   .page {
+      transform: rotate(0deg);
       background-color: white;
       height: 100%;
       width: 100%;

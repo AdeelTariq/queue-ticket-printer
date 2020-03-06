@@ -81,13 +81,16 @@ export default class App extends Component {
   }
 
   print(increase) {
-    electronRemote.getCurrentWindow().webContents.print ({silent: true, printBackground: true, deviceName: this.state.selectedPrinter.name});
-    if (increase) {
-      this.setState ({number: this.state.number + 9})
-      store.set('number', this.state.number + 9);
-    } else {
-      store.set('number', this.state.number);
-    }
+    electronRemote.getCurrentWindow().webContents.print ({silent: true, printBackground: true, deviceName: this.state.selectedPrinter.name}
+      , (success, errorType) => {
+        if (!success) console.log(errorType)
+        if (increase) {
+          this.setState ({number: this.state.number + 9})
+          store.set('number', this.state.number + 9);
+        } else {
+          store.set('number', this.state.number);
+        }
+      });
   }
 
   increase () {
