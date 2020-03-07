@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 import './App.css';
 import Chit from './components/Chit'
+import Toast from './components/Toast';
 const electronRemote = window.require('electron').remote;
+const {Menu, MenuItem} = electronRemote;
 const Store = electronRemote.require('electron-store');
 const store = new Store();
 const MAX_NUMBER = 10000;
+const menu = new Menu ();
 
 export default class App extends Component {
 
@@ -14,7 +18,38 @@ export default class App extends Component {
       number: store.get('number') === undefined ? 1 : store.get('number'),
       selectedPrinter: {name: 'Printers'},
       printers: [],
+      error: "",
     }
+
+    menu.append (new MenuItem ({role: 'appMenu'}));
+    menu.append (new MenuItem ({role: 'fileMenu'}));
+    
+    var submenu = new Menu ();
+    submenu.append (new MenuItem({
+      label: 'Prev page (-9)',
+      accelerator: 'CmdOrCtrl+Left',
+      click: () => { this.decrease () }
+    }));
+    submenu.append (new MenuItem({
+      label: 'Next page (+9)',
+      accelerator: 'CmdOrCtrl+Right',
+      click: () => { this.increase () }
+    }));
+    submenu.append (new MenuItem({
+      label: 'Print',
+      accelerator: 'CmdOrCtrl+P',
+      click: () => { this.print(false) }
+    }));
+    submenu.append (new MenuItem({
+      label: 'Print and +9',
+      accelerator: 'CmdOrCtrl+.',
+      click: () => { this.print(true) }
+    }));
+    
+    var printMenu = new MenuItem({label: 'Print', 'submenu': submenu});
+    menu.append(printMenu);
+    
+    Menu.setApplicationMenu(menu);
   }
 
   componentDidMount () {
@@ -63,7 +98,7 @@ export default class App extends Component {
       <div className="container pt-4">
         <div className="row">
           <span className="col-auto px-2 unselectable text">Number:</span>
-          <input autoFocus type="number" max={MAX_NUMBER} min="1" placeholder="Number" value={this.state.number} className="col-2 input mx-2 text" onChange={(event) => this.setNumber (event)}/>
+          <input type="number" max={MAX_NUMBER} min="1" placeholder="Number" value={this.state.number} className="col-2 input mx-2 text" onChange={(event) => this.setNumber (event)}/>
           <button onClick={() => this.increase ()} className="col-auto btn btn-primary mx-2">+9</button>
           
           <div className="col"></div>
@@ -76,6 +111,8 @@ export default class App extends Component {
         <div className="page-aspect-container mt-4">
           {page}
         </div>
+        <Toast id="toast-success" title="Success!" body="Printed successfully!" color='green'/>
+        <Toast id="toast-error" title="Error!" body={this.state.error} color='brown'/>
       </div>
     );
   }
@@ -84,6 +121,14 @@ export default class App extends Component {
     electronRemote.getCurrentWindow().webContents.print ({silent: true, printBackground: true, deviceName: this.state.selectedPrinter.name}
       , (success, errorType) => {
         if (!success) console.log(errorType)
+
+        if(success) {
+          $('#toast-success').toast({delay: 2000, animation: true}).toast('show');
+        } else {
+          this.setState({error: errorType});
+          $('#toast-error').toast({delay: 2000}).toast('show');
+        }
+
         if (increase) {
           this.setState ({number: this.state.number + 9})
           store.set('number', this.state.number + 9);
@@ -96,6 +141,11 @@ export default class App extends Component {
   increase () {
     this.setState ({number: this.state.number + 9})
       store.set('number', this.state.number + 9);
+  }
+
+  decrease () {
+    this.setState ({number: this.state.number - 9})
+      store.set('number', this.state.number - 9);
   }
 
   setNumber (event) {

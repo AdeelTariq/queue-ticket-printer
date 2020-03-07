@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -13,6 +13,8 @@ function createWindow () {
       nodeIntegration: true,
     }
   })
+
+  Menu.setApplicationMenu(new Menu());
 
   // and load the index.html of the app.
   const startUrl = process.env.ELECTRON_START_URL || url.format({

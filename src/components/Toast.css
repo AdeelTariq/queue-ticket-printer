@@ -1,0 +1,14 @@
+@media print {
+    .toast {
+        display: none !important;;
+        position: absolute;
+        top: -100px;
+        right: -160px;
+    }
+}
+ 
+.toast {
+    position: absolute;
+    top: 100px;
+    right: 16px;
+}
