@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import './App.css';
-import Chit from './components/Chit'
+import Ticket from './components/Ticket'
 import Toast from './components/Toast';
 const electronRemote = window.require('electron').remote;
 const {Menu, MenuItem} = electronRemote;
@@ -64,15 +64,15 @@ export default class App extends Component {
   }
 
   render() {
-    var chits = [];
+    var tickets = [];
 
     for (let index = 0; index < 9; index++) {
-      chits.push(<Chit key={index} number={index + this.state.number}/>);
+      tickets.push(<Ticket key={index} number={index + this.state.number}/>);
     }
 
     var page = (<div className="page unselectable">
                   <div className="row">
-                    {chits}
+                    {tickets}
                   </div>
                 </div>);
 
