@@ -14,7 +14,8 @@ function createWindow () {
     }
   })
 
-  Menu.setApplicationMenu(new Menu());
+  if (!process.env.ELECTRON_START_URL)
+    Menu.setApplicationMenu(new Menu());
 
   // and load the index.html of the app.
   const startUrl = process.env.ELECTRON_START_URL || url.format({
