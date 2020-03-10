@@ -12,6 +12,7 @@
 /build
 dist
 *.tgz
+original.jpg
 
 # misc
 .DS_Store

@@ -7,7 +7,7 @@ const electronRemote = window.require('electron').remote;
 const {Menu, MenuItem} = electronRemote;
 const Store = electronRemote.require('electron-store');
 const store = new Store();
-const MAX_NUMBER = 10000;
+const MAX_NUMBER = 9999;
 const menu = new Menu ();
 
 export default class App extends Component {

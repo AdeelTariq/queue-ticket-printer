@@ -1,5 +1,5 @@
 import React from 'react'
-import ticket from '../assets/ticket.jpeg';
+import ticket from '../assets/original.jpg'; // or ticket.jpeg
 import './Ticket.css';
 
 function Ticket({number}) {
@@ -15,7 +15,7 @@ function Ticket({number}) {
 }
 
 function getNumberStr (number) {
-    return pad (number, 5);
+    return pad (number, 4);
 }
 
 function pad (str, max) {
