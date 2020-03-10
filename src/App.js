@@ -130,6 +130,11 @@ export default class App extends Component {
         }
 
         if (increase) {
+          if (this.state.number + 9 > MAX_NUMBER) {
+            this.setState({error: "Can't go past the max number: 9999"});
+            $('#toast-error').toast({delay: 2000}).toast('show');
+            return;
+          }
           this.setState ({number: this.state.number + 9})
           store.set('number', this.state.number + 9);
         } else {
@@ -139,11 +144,21 @@ export default class App extends Component {
   }
 
   increase () {
+    if (this.state.number + 9 > MAX_NUMBER) {
+      this.setState({error: "Can't go past the max number: 9999"});
+      $('#toast-error').toast({delay: 2000}).toast('show');
+      return;
+    }
     this.setState ({number: this.state.number + 9})
       store.set('number', this.state.number + 9);
   }
 
   decrease () {
+    if (this.state.number - 9 < 1) {
+      this.setState({error: "Can't go below 1"});
+      $('#toast-error').toast({delay: 2000}).toast('show');
+      return;
+    }
     this.setState ({number: this.state.number - 9})
       store.set('number', this.state.number - 9);
   }
@@ -155,8 +170,8 @@ export default class App extends Component {
       number = 1;
     }
 
-    if (number > MAX_NUMBER) {
-      number = MAX_NUMBER;
+    if (number + 8 > MAX_NUMBER) {
+      number = MAX_NUMBER - 8;
     }
     if (number < 1) {
       number = 1;

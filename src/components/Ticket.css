@@ -29,7 +29,7 @@
   }
 
   .ticket-number {
-    transform: rotate(270deg) translate(-25%, 128%);
+    transform: rotate(270deg) translate(-25%, 135%);
     font-family: 'Number';
     text-align: center;
     font-weight: bold;
